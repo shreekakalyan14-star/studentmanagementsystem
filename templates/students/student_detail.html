@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>
+
+    {{ student.first_name }}
+    {{ student.last_name }}
+
+</h2>
+
+<hr>
+
+<table class="table">
+
+<tr>
+
+<th>Email</th>
+
+<td>{{ student.email }}</td>
+
+</tr>
+
+<tr>
+
+<th>Phone</th>
+
+<td>{{ student.phone }}</td>
+
+</tr>
+
+<tr>
+
+<th>Department</th>
+
+<td>{{ student.department }}</td>
+
+</tr>
+
+<tr>
+
+<th>Gender</th>
+
+<td>{{ student.gender }}</td>
+
+</tr>
+
+<tr>
+
+<th>CGPA</th>
+
+<td>{{ student.cgpa }}</td>
+
+</tr>
+
+<tr>
+
+<th>Courses</th>
+
+<td>
+
+{% for course in student.courses.all %}
+
+<span class="badge bg-success">
+
+{{ course.name }}
+
+</span>
+
+{% endfor %}
+
+</td>
+
+</tr>
+
+</table>
+
+<a href="{% url 'student_list' %}" class="btn btn-secondary">
+
+Back
+
+</a>
+
+{% endblock %}

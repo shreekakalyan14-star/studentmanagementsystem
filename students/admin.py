@@ -1,7 +1,4 @@
 from django.contrib import admin
-
-# Register your models here.
-
 from .models import Student,Course,Department
 
 @admin.register(Department)
@@ -9,7 +6,7 @@ from .models import Student,Course,Department
 class DepartmentAdmin(admin.ModelAdmin):
     list_display = ('id',
                     'name',
-                    'building')
+                    'building',)
     
 
     @admin.register(Course)

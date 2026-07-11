@@ -9,13 +9,9 @@ class CustomUserAdmin(UserAdmin):
 
     list_display = (
         "username",
+        "first_name",
+        "last_name",  # <-- Added the missing comma here!
         "email",
-        "role",
-        "is_staff",
-        "is_active",
-    )
-
-    list_filter = (
         "role",
         "is_staff",
     )
@@ -28,6 +24,20 @@ class CustomUserAdmin(UserAdmin):
                     "phone",
                     "profile_picture",
                     "role",
+                )
+            },
+        ),
+    )
+
+    add_fieldsets = UserAdmin.add_fieldsets + (
+        (
+            "Additional Information",
+            {
+                "fields": (
+                    "email",
+                    "phone",
+                    "role",
+                    "profile_picture",
                 )
             },
         ),

@@ -1,11 +1,19 @@
 from django import forms
+from django.contrib.auth import get_user_model
 from .models import Student
 
+User= get_user_model()
 class StudentForm(forms.ModelForm):
+
+    user=forms.ModelChoiceField(
+        queryset=User.objects.filter(role="STUDENT"),
+        empty_label="Select Student User"
+    )
     class Meta:
         model=Student
 
         fields=[
+            'user',
             'dob',
             'gender',
             'cgpa',
@@ -18,12 +26,6 @@ class StudentForm(forms.ModelForm):
             'courses':forms.CheckboxSelectMultiple()
         }
 
-
-        def clean_email(self):
-            email=self.cleaned_data['email']
-            if Student.objects.filter(email=email).excludes(pk=self.instance.pk).exists():
-                raise forms.ValidationError("Thid email is already in use.")
-            return email
         
         def clean_cgpa(self):
             cgpa=self.cleaned_data['cgpa']

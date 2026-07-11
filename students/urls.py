@@ -1,30 +1,31 @@
 from django.urls import path
-from . import views
+from .views import (
+    HomeView,
+    StudentListView,
+    StudentDetailView,
+    StudentCreateView,
+    StudentUpdateView,
+    StudentDeleteView,
+)
 
 urlpatterns = [
 
-    path("", views.home, name="home"),
+    path("", HomeView.as_view(), name="home"),
 
-    path("students/", views.student_list, name="student_list"),
+    path("students/", StudentListView.as_view, name="student_list"),
 
-    path("students/add/", views.student_create, name="student_create"),
+    path("students/add/", StudentCreateView.as_view, name="student_add"),
 
     path(
-        "students/<int:student_id>/",
-        views.student_detail,
-        name="student_detail",
+        "students/<int:pk>/",StudentDetailView.as_view,name="student_detail",
     ),
 
     path(
-        "students/<int:student_id>/edit/",
-        views.student_update,
-        name="student_update",
+        "students/<int:pk>/edit/",StudentUpdateView.as_view,name="student_update",
     ),
 
     path(
-        "students/<int:student_id>/delete/",
-        views.student_delete,
-        name="student_delete",
+        "students/<int:pk>/delete/",StudentDeleteView.as_view,name="student_delete",
     ),
 
 ]

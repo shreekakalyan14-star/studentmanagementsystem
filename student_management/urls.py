@@ -8,7 +8,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('students/', include('students.urls')),
     path('accounts/', include('accounts.urls')),
-
+    path('api/', include ('api.urls')),
     path('',RedirectView.as_view(url='/students/',permanent=True)),
 ]
 

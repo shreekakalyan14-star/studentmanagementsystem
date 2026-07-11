@@ -9,23 +9,23 @@ from .views import (
 )
 
 urlpatterns = [
-
+    # This one was correct!
     path("", HomeView.as_view(), name="home"),
 
-    path("students/", StudentListView.as_view, name="student_list"),
+    # Added missing () to all the paths below:
+    path("students/", StudentListView.as_view(), name="student_list"),
 
-    path("students/add/", StudentCreateView.as_view, name="student_add"),
+    path("students/add/", StudentCreateView.as_view(), name="student_add"),
 
     path(
-        "students/<int:pk>/",StudentDetailView.as_view,name="student_detail",
+        "students/<int:pk>/", StudentDetailView.as_view(), name="student_detail",
     ),
 
     path(
-        "students/<int:pk>/edit/",StudentUpdateView.as_view,name="student_update",
+        "students/<int:pk>/edit/", StudentUpdateView.as_view(), name="student_update",
     ),
 
     path(
-        "students/<int:pk>/delete/",StudentDeleteView.as_view,name="student_delete",
+        "students/<int:pk>/delete/", StudentDeleteView.as_view(), name="student_delete",
     ),
-
 ]

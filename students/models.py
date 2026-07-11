@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 
 class Department(models.Model):
     name = models.CharField(max_length=100)
@@ -7,7 +8,7 @@ class Department(models.Model):
     def __str__(self):
         return self.name
 
-class Course(models.Model):  # Renamed to PascalCase
+class Course(models.Model): 
     name = models.CharField(max_length=100)
     code = models.CharField(max_length=100)
     credits = models.IntegerField()
@@ -15,27 +16,22 @@ class Course(models.Model):  # Renamed to PascalCase
     def __str__(self):
         return self.name
 
-class Student(models.Model):  # Renamed to PascalCase
-    GENDER_CHOICES = [  # Fixed: assignment and proper list
+class Student(models.Model):  
+    GENDER_CHOICES = ( 
         ('Male', 'Male'),
-        ('Female', 'Female')
-    ]
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
-    email = models.EmailField(unique=True)
-    phone = models.CharField(max_length=20)
-    dob = models.DateField()  # Fixed: DateField not DataField
-    gender = models.CharField(max_length=10, choices=GENDER_CHOICES)
-    cgpa = models.DecimalField(max_digits=4, decimal_places=2)
-    photo = models.ImageField(upload_to='student_photos/', null=True)
-    department = models.ForeignKey(
-        Department, 
-        on_delete=models.CASCADE, 
-        related_name='students'
-    )  # Fixed: added missing comma and line break for readability
-    courses = models.ManyToManyField(Course, blank=True)  # Uses corrected class name
+        ('Female', 'Female'),
+        ('Other', 'Other')
+    )
+
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="student_profile")
+    dob = models.DateField()
+    gender = models.CharField(max_length=10, choices=GENDER_CHOICES, default='Male')
+    cgpa = models.DecimalField(max_digits=3, decimal_places=2)
+    photo = models.ImageField(upload_to='students/', null=True, blank=True)
+    department = models.ForeignKey(Department, on_delete=models.CASCADE, related_name='students')
+    courses = models.ManyToManyField(Course, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)  # Fixed: updated_at not updates_at
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name}"  # Fixed: uses existing fields
+        return self.user.get_full_name() or self.user.username

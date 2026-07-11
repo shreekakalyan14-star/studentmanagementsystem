@@ -10,7 +10,7 @@ class DepartmentAdmin(admin.ModelAdmin):
     list_display = ('id',
                     'name',
                     'building')
-    search_fields = ('name',)
+    
 
     @admin.register(Course)
 
@@ -19,18 +19,16 @@ class DepartmentAdmin(admin.ModelAdmin):
                         'name',
                         'code',
                         'credits')
-        search_fields=('name','code')
+        
         
     @admin.register(Student)
 
     class StudentAdmin(admin.ModelAdmin):
         list_display=('id',
-                      'first_name',
-                      'last_name',
-                      'email',
+                      'user',
                       'department',
                       'cgpa',
         )
         list_filter=('department','gender')
-        search_fields=('first_name','last_name','email')
+        search_fields=('user__username','user__first_name','user__last_name','user__email')
         filter_horizontal=('courses',)

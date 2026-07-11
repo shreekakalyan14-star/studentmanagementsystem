@@ -10,6 +10,17 @@
 </h2>
 
 <hr>
+{% if student.photo %}
+
+<img
+
+src="{{ student.photo.url }}"
+
+width="200"
+
+class="img-thumbnail mb-3">
+
+{% endif %}
 
 <table class="table">
 
@@ -78,6 +89,22 @@
 <a href="{% url 'student_list' %}" class="btn btn-secondary">
 
 Back
+
+</a>
+
+<a
+href="{% url 'student_update' student.id %}"
+class="btn btn-warning">
+
+Edit
+
+</a>
+
+<a
+href="{% url 'student_delete' student.id %}"
+class="btn btn-danger">
+
+Delete
 
 </a>
 

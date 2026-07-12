@@ -1,16 +1,41 @@
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from .serializers import Studentserializer 
-from students.models import Student
-class ApiHome(APIView):
-    def get(self,request):
-        return Response({"message":"Student Management System",
-                         "version":"1.0.0",
-                         "status":"running"
-                         })
+from rest_framework import generics
 
-class StudentListAPI(APIView):
-    def get(self,request):
-        students=Student.objects.all()
-        serializer=Studentserializer(students,many=True)
-        return Response(serializer.data)
+from students.models import Student
+
+from .serializers import (
+    StudentSerializer,
+    StudentWriteSerializer,
+)
+
+
+class StudentListCreateAPI(generics.ListCreateAPIView):
+
+    queryset = Student.objects.select_related(
+        "user",
+        "department",
+    ).prefetch_related("courses")
+
+    def get_serializer_class(self):
+
+        if self.request.method == "POST":
+            return StudentWriteSerializer
+
+        return StudentSerializer
+
+
+class StudentRetrieveUpdateDestroyAPI(
+    generics.RetrieveUpdateDestroyAPIView
+):
+
+    queryset = Student.objects.select_related(
+        "user",
+        "department"
+    ).prefetch_related("courses")
+
+    def get_serializer_class(self):
+
+        if self.request.method in ["PUT", "PATCH"]:
+            return StudentWriteSerializer
+
+        return StudentSerializer
+    

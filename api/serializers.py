@@ -1,47 +1,65 @@
 from rest_framework import serializers
 from students.models import Student, Department,Course
 from accounts.models import CustomUser
-
-
+from rest_framework import generics
 class UserSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = CustomUser
-        fields = {
+        fields = [
             "id",
             "username",
+            "email",
             "first_name",
             "last_name",
-            "email",
-            "phone",
-            "role",            
-        }
+            "phone_number",
+            "role",
+        ]
+
 
 class DepartmentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Department
-        fields = " __all__"
+        fields = "__all__"
+        
+class courseSerializer(serializers.ModelSerializer):
 
-class CourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
         fields = "__all__"
 
-class Studentserializer(serializers.ModelSerializer):
-    
-    user=UserSerializer(read_only=True)
-    department=DepartmentSerializer(read_only=True)
-    courses=CourseSerializer(many=True,read_only=True)
 
-    class meta:
+class StudentSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)
+
+    department = DepartmentSerializer(read_only=True)
+    courses = courseSerializer(many=True)
+
+    class Meta:
         model = Student
-        fields = {
+        fields = [
             "id",
             "user",
             "dob",
             "gender",
             "cgpa",
+            "photo",
             "department",
             "courses",
+
+        ]
+
+class StudentWriteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Student
+        fields = [
+            "id",
+            "user",
+            "dob",
+            "gender",
+            "cgpa",
             "photo",
-        }
+            "department",
+            "courses",
+        ]

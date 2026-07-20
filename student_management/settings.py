@@ -1,5 +1,5 @@
 from pathlib import Path
-
+from datetime import timedelta
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -32,6 +32,8 @@ INSTALLED_APPS = [
     'accounts',
     'rest_framework',
     'api',
+    'rest_framework_simplejwt.token_blacklist',
+    'django_filters'
 ]
 
 MIDDLEWARE = [
@@ -125,3 +127,26 @@ LOGIN_URL = "login"
 LOGIN_REDIRECT_URL = "home"
 
 LOGOUT_REDIRECT_URL = "login"
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',  # Added missing comma to make it a tuple
+    ),
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',
+        'rest_framework.filters.SearchFilter',
+        'rest_framework.filters.OrderingFilter',
+    ),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',  # Changed from tuple to a regular string
+    'PAGE_SIZE': 5
+}
+
+SIMPLE_JWT={
+    "ACCESS_TOKEN_LIFETIME":timedelta(minutes=5),
+    "REFRESH_TOKEN_LIFETIME":timedelta(days=1),
+    "ROTATE_REFRESH_TOKENS":True,
+    "BLACKLIST_AFTER_ROTATION":True,
+}
